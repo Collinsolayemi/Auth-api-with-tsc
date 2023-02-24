@@ -24,8 +24,7 @@ server.listen(8088, () => {
   console.log(`Server running`);
 });
 
-const MONGO_URL =
-  'mongodb+srv://collinsolayemi1995:Babasturborn@cluster0.wymwpvz.mongodb.net/?retryWrites=true&w=majority';
+const MONGO_URL = process.env.MONGO_URL;
 
 mongoose.Promise = Promise;
 mongoose.connect(MONGO_URL);

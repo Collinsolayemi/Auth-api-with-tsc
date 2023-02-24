@@ -17,4 +17,16 @@ const UserSchema = new mongoose.Schema({
   },
 });
 
-export const userModel = mongoose.model('User', UserSchema);
+export const UserModel = mongoose.model('User', UserSchema);
+
+//user controllers
+export const getUsers = () => UserModel.find();
+export const getUsersByEmail = (email: string) => UserModel.findOne({ email });
+export const getUsersBySessionToken = (sessionToken: string) =>
+  UserModel.findOne({
+    'authentication.sessionToken': sessionToken,
+  });
+
+export const getUserById = (id: string) => UserModel.findById(id);
+export const createUser = (values: Record<string, any>) =>
+  UserModel.create(values);
