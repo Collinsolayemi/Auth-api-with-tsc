@@ -10,8 +10,8 @@ export const register = async (req: express.Request, res: express.Response) => {
     //check if require field exist
     if (!email || !password || !username) return res.sendStatus(400);
 
-    const existingUser = await getUsersByEmail(email);
-    if (!existingUser) return res.sendStatus(400);
+    // const existingUser = await getUsersByEmail(email);
+    // if (!existingUser) return res.sendStatus(400);
 
     //if everything is okay lets create the authentication
     const salt = random();
@@ -23,9 +23,10 @@ export const register = async (req: express.Request, res: express.Response) => {
         password: authentication(salt, password),
       },
     });
+
     res.status(200).json(user).end();
   } catch (error) {
     console.log(error);
-    res.sendStatus(400);
+    res.sendStatus(402);
   }
 };

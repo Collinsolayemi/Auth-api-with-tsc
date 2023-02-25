@@ -6,6 +6,7 @@ import compression from 'compression';
 import cors from 'cors';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
+import router from './router';
 dotenv.config();
 
 const app = express();
@@ -32,3 +33,9 @@ mongoose.Promise = Promise;
 mongoose.set('strictQuery', false);
 mongoose.connect(MONGO_URL);
 mongoose.connection.on('error', (err: Error) => console.log(err));
+
+app.use('/', router());
+
+app.get('/get', (req: express.Request, res: express.Response) => {
+  res.send('get routs');
+});
