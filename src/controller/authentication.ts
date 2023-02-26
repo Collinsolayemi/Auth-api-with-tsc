@@ -1,9 +1,42 @@
-import express from 'express';
-import { getUsersByEmail, createUser } from '../db/user';
+import express, { Request, Response } from 'express';
+import { getUsersByEmail, createUser, UserModel } from '../db/user';
 import { random, authentication } from '../helpers';
 
-//log in functionality
-export const register = async (req: express.Request, res: express.Response) => {
+export const logIn = async (req: Request, res: Response) => {
+  try {
+    const { email, password } = req.body;
+    if (!email || !password) {
+      return res.sendStatus(404);
+    }
+
+    //get the user
+    const user = await getUsersByEmail(email).select(
+      '+authentication.salt +authentication.password'
+    );
+
+    //compare keyboard
+    const compare = authentication(user.authentication.salt, password);
+    const salt = random();
+    user.authentication.sessionToken = authentication(
+      salt,
+      user._id.toString()
+    );
+
+    user.save;
+    res.cookie('COLLINS-AUTH', user.authentication.sessionToken, {
+      domain: 'localhost',
+      path: '/',
+    });
+
+    res.status(200).json(user);
+  } catch (err) {
+    console.log(err);
+    res.sendStatus(400);
+  }
+};
+
+//register new user
+export const register = async (req: Request, res: Response) => {
   try {
     const { email, password, username } = req.body;
 
@@ -27,6 +60,6 @@ export const register = async (req: express.Request, res: express.Response) => {
     res.status(200).json(user).end();
   } catch (error) {
     console.log(error);
-    res.sendStatus(402);
+    return res.sendStatus(400);
   }
 };
