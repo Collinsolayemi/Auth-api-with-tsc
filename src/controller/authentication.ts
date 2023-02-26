@@ -15,7 +15,11 @@ export const logIn = async (req: Request, res: Response) => {
     );
 
     //compare keyboard
-    const compare = authentication(user.authentication.salt, password);
+    const compareHash = authentication(user.authentication.salt, password);
+    if (user.authentication.password !== compareHash) {
+      return res.sendStatus(403);
+    }
+
     const salt = random();
     user.authentication.sessionToken = authentication(
       salt,
