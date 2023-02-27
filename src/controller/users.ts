@@ -1,13 +1,17 @@
 import express, { Request, Response, NextFunction } from 'express';
-import { getUsers } from 'db/user';
+import { getUsers, getUsersByEmail } from '../db/user';
 
 //get all users
 export const getAllUsers = async (req: Request, res: Response) => {
   try {
-    const user = await getUsers();
-    return res.sendStatus(200).json(user);
+    const users = await getUsers();
+
+    res.status(200).json({
+      status: 'success',
+      total: users.length,
+      users: users,
+    });
   } catch (err) {
-    console.log(err);
-    res.sendStatus(400);
+    res.status(400).json(err);
   }
 };

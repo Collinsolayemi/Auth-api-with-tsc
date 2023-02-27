@@ -1,6 +1,7 @@
 import express, { Router } from 'express';
-import { getAllUsers } from 'controller/users';
+import { getAllUsers } from '../controller/users';
+import { isAuthenticated } from '../middleware/index';
 
 export default (router: Router) => {
-  router.get('/', getAllUsers);
+  router.get('/users', getAllUsers);
 };
