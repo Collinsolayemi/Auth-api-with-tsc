@@ -1,5 +1,5 @@
 import express, { Request, Response, NextFunction } from 'express';
-import { getUsers, getUsersByEmail } from '../db/user';
+import { getUsers, deleteUserById } from '../db/user';
 
 //get all users
 export const getAllUsers = async (req: Request, res: Response) => {
@@ -11,6 +11,17 @@ export const getAllUsers = async (req: Request, res: Response) => {
       total: users.length,
       users: users,
     });
+  } catch (err) {
+    res.status(400).json(err);
+  }
+};
+
+//delete users
+export const deleteUser = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const user = await deleteUserById(id);
+    res.status(400).json(user);
   } catch (err) {
     res.status(400).json(err);
   }

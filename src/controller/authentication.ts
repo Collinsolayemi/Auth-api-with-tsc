@@ -27,7 +27,7 @@ export const logIn = async (req: Request, res: Response) => {
     );
 
     user.save;
-    res.cookie('COLLINS-AUTH', user.authentication.sessionToken, {
+    res.cookie('ANTONIO-AUTH', user.authentication.sessionToken, {
       domain: 'localhost',
       path: '/',
     });
